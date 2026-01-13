@@ -113,6 +113,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
+            position: relative;
         }
 
         /* Логотип в меню */
@@ -142,6 +143,284 @@
             font-weight: 700;
             color: var(--mnet-primary);
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Иконка мегаменю */
+        .mega-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--mnet-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mega-menu-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--mnet-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        .mega-menu-toggle:hover::before {
+            opacity: 0.1;
+        }
+
+        .mega-menu-toggle:hover {
+            color: var(--mnet-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .mega-menu-toggle.active {
+            color: var(--mnet-white);
+            background: var(--mnet-primary);
+            box-shadow: 0 4px 12px rgba(158, 235, 71, 0.3);
+        }
+
+        .mega-menu-toggle.active:hover {
+            background: var(--mnet-primary-dark);
+        }
+
+        .toggle-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mega-menu-toggle.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .nav-logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Современное мегаменю */
+        .mega-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0;
+            display: none;
+            z-index: 1000;
+            border-radius: 20px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mega-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mega-menu-header {
+            background: linear-gradient(135deg, var(--mnet-primary), var(--mnet-blue));
+            padding: 25px 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mega-menu-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0) 100%);
+        }
+
+        .mega-menu-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mega-menu-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mega-menu-content {
+            display: flex;
+            padding: 30px;
+            gap: 40px;
+            background: white;
+        }
+
+        .mega-menu-column {
+            flex: 1;
+        }
+
+        .mega-menu-category {
+            margin-bottom: 30px;
+        }
+
+        .mega-menu-category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--mnet-primary-pastel);
+        }
+
+        .mega-menu-category-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--mnet-primary), var(--mnet-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(158, 235, 71, 0.2);
+        }
+
+        .mega-menu-category-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--mnet-primary);
+        }
+
+        .mega-menu-category-title a {
+            color: var(--mnet-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .mega-menu-category-title a:hover {
+            color: var(--mnet-primary-dark);
+        }
+
+        .mega-menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mega-menu-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mega-menu-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            color: var(--mnet-text);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: rgba(245, 245, 245, 0.5);
+            border: 1px solid transparent;
+        }
+
+        .mega-menu-item a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--mnet-primary), var(--mnet-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            border-radius: 12px;
+        }
+
+        .mega-menu-item a:hover {
+            transform: translateX(8px);
+            border-color: var(--mnet-primary-light);
+            box-shadow: 0 8px 24px rgba(158, 235, 71, 0.15);
+            color: var(--mnet-white);
+        }
+
+        .mega-menu-item a:hover::before {
+            opacity: 1;
+        }
+
+        .mega-menu-item-icon {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mnet-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            z-index: 1;
+        }
+
+        .mega-menu-item a:hover .mega-menu-item-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .mega-menu-item-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            z-index: 1;
+        }
+
+        .mega-menu-item-arrow {
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: all 0.3s ease;
+            color: var(--mnet-primary);
+            z-index: 1;
+        }
+
+        .mega-menu-item a:hover .mega-menu-item-arrow {
+            opacity: 1;
+            transform: translateX(0);
+            color: white;
         }
 
         /* Навигационные ссылки */
@@ -606,6 +885,10 @@
                 grid-template-columns: repeat(4, 1fr);
                 gap: 15px;
             }
+            .mega-menu-content {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -709,6 +992,26 @@
 
             .small-icon-name {
                 font-size: 12px;
+            }
+
+            .mega-menu {
+                padding: 0;
+                border-radius: 12px;
+                margin: 0 10px;
+                width: calc(100% - 20px);
+            }
+
+            .mega-menu-header {
+                padding: 20px;
+            }
+
+            .mega-menu-content {
+                padding: 20px;
+                flex-direction: column;
+            }
+
+            .mega-menu-toggle .toggle-text {
+                display: none;
             }
         }
 
@@ -836,11 +1139,176 @@
     <!-- Основная навигация -->
     <div class="container">
         <nav class="nav-main">
-            <!-- Логотип -->
-            <a href="#" class="nav-logo">
-                <div class="nav-logo-icon">MN</div>
-                <div class="nav-logo-text">MNet</div>
-            </a>
+            <!-- Логотип и иконка мегаменю -->
+            <div class="nav-logo-container">
+                <a href="#" class="nav-logo">
+                    <div class="nav-logo-icon">MN</div>
+                    <div class="nav-logo-text">MNet</div>
+                </a>
+                <button class="mega-menu-toggle" id="megaMenuToggle">
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </button>
+            </div>
+
+            <!-- Современное мегаменю -->
+            <div class="mega-menu" id="megaMenu">
+                <div class="mega-menu-header">
+                    <h3 class="mega-menu-title">Наши услуги</h3>
+                    <p class="mega-menu-subtitle">Полный спектр IT и технических решений</p>
+                </div>
+                <div class="mega-menu-content">
+                    <div class="mega-menu-column">
+                        <!-- Коллективные антенны -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-signal"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/kollektivnye-antenny.html">Коллективные антенны</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/kollektivnye-antenny.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-signal"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Коллективные антенны</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/zona-pokrytiya-dlya-kollektivnyh-anten.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Список обслуживаемых домов</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Монтажные работы -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-sitemap"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/montazhnye-raboty.html">Монтажные работы</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/montazhnye-raboty.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-sitemap"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Монтажные работы</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Видеонаблюдение -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-video-camera"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/videonablyudenie.html">Видеонаблюдение</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/videonablyudenie.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-video-camera"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Видеонаблюдение</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mega-menu-column">
+                        <!-- Хостинг, Создание сайтов -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-server"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/hosting-sozdanie-sajtov.html">Хостинг и Сайты</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/hosting-sozdanie-sajtov.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-server"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Хостинг и создание сайтов</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Регистрация доменных имен -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-globe"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/registraciya-domennyh-imen.html">Домены</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/registraciya-domennyh-imen.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-globe"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Регистрация доменных имен</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Рекламные услуги -->
+                        <div class="mega-menu-category">
+                            <div class="mega-menu-category-header">
+                                <div class="mega-menu-category-icon">
+                                    <i class="fa fa-bullhorn"></i>
+                                </div>
+                                <h4 class="mega-menu-category-title">
+                                    <a href="/ru/pages/reklamnye-uslugi.html">Реклама</a>
+                                </h4>
+                            </div>
+                            <div class="mega-menu-items">
+                                <div class="mega-menu-item">
+                                    <a href="/ru/pages/reklamnye-uslugi.html">
+                                        <div class="mega-menu-item-icon">
+                                            <i class="fa fa-bullhorn"></i>
+                                        </div>
+                                        <span class="mega-menu-item-text">Рекламные услуги</span>
+                                        <i class="fas fa-arrow-right mega-menu-item-arrow"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Навигационные ссылки -->
             <ul class="nav-links" id="navLinks">
@@ -1401,6 +1869,8 @@
 
                 // Закрываем мобильное меню если оно открыто
                 document.getElementById('navLinks').classList.remove('active');
+                // Закрываем мегаменю
+                closeMegaMenu();
             });
         });
 
@@ -1434,12 +1904,38 @@
 
         mobileMenuBtn.addEventListener('click', () => {
             navLinksContainer.classList.toggle('active');
+            // Закрываем мегаменю при открытии мобильного меню
+            closeMegaMenu();
+        });
+
+        // Мегаменю
+        const megaMenuToggle = document.getElementById('megaMenuToggle');
+        const megaMenu = document.getElementById('megaMenu');
+
+        function toggleMegaMenu() {
+            megaMenu.classList.toggle('active');
+            megaMenuToggle.classList.toggle('active');
+        }
+
+        function closeMegaMenu() {
+            megaMenu.classList.remove('active');
+            megaMenuToggle.classList.remove('active');
+        }
+
+        megaMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMegaMenu();
+            // Закрываем мобильное меню при открытии мегаменю
+            navLinksContainer.classList.remove('active');
         });
 
         // Закрытие меню при клике вне его
         document.addEventListener('click', (event) => {
             if (!event.target.closest('#mobileMenuBtn') && !event.target.closest('#navLinks')) {
                 navLinksContainer.classList.remove('active');
+            }
+            if (!event.target.closest('#megaMenuToggle') && !event.target.closest('#megaMenu')) {
+                closeMegaMenu();
             }
         });
 
