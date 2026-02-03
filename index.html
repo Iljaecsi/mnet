@@ -71,6 +71,34 @@
             #323232 100%);
         }
 
+        /* Фиксация страницы при открытии мега-меню */
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Затемнение фона при открытом мега-меню */
+        .mega-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mega-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
@@ -303,10 +331,14 @@
 
         /* Современное мегаменю */
         .mega-menu {
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            width: 100%;
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            width: 90%;
+            max-width: 1200px;
+            max-height: 80vh;
+            overflow-y: auto;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             box-shadow: 0 20px 60px rgba(33, 150, 243, 0.15);
@@ -315,9 +347,7 @@
             display: none;
             z-index: 1000;
             border-radius: 20px;
-            overflow: hidden;
             opacity: 0;
-            transform: translateY(-10px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -330,7 +360,36 @@
         .mega-menu.active {
             display: block;
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Улучшение скролла в мега-меню */
+        .mega-menu-content {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        /* Стилизация скроллбара для WebKit браузеров */
+        .mega-menu-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mega-menu-content::-webkit-scrollbar-track {
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 3px;
+        }
+
+        .mega-menu-content::-webkit-scrollbar-thumb {
+            background: var(--mnet-primary);
+            border-radius: 3px;
+        }
+
+        body.dark-theme .mega-menu-content::-webkit-scrollbar-track {
+            background: rgba(156, 39, 176, 0.1);
+        }
+
+        body.dark-theme .mega-menu-content::-webkit-scrollbar-thumb {
+            background: var(--mnet-dark-primary);
         }
 
         .mega-menu-header {
@@ -1695,10 +1754,9 @@
             }
 
             .mega-menu {
-                padding: 0;
-                border-radius: 12px;
-                margin: 0 10px;
-                width: calc(100% - 20px);
+                top: 80px;
+                width: 95%;
+                max-height: 70vh;
             }
 
             .mega-menu-header {
@@ -1817,6 +1875,8 @@
     </style>
 </head>
 <body>
+<!-- Overlay для затемнения фона -->
+<div class="mega-menu-overlay" id="megaMenuOverlay"></div>
 
 <!-- Header -->
 <header>
@@ -2649,6 +2709,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         const navLinks = document.querySelectorAll('.nav-links a[data-category]');
         const categoryContents = document.querySelectorAll('.category-content');
+        const navLinksContainer = document.getElementById('navLinks');
+        const body = document.body;
 
         // Анимация при переключении категорий
         function switchCategory(category) {
@@ -2731,7 +2793,6 @@
 
         // Мобильное меню
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinksContainer = document.getElementById('navLinks');
 
         mobileMenuBtn.addEventListener('click', () => {
             navLinksContainer.classList.toggle('active');
@@ -2743,38 +2804,63 @@
         const megaMenuToggle = document.getElementById('megaMenuToggle');
         const megaMenu = document.getElementById('megaMenu');
         const logoContainer = document.getElementById('logoContainer');
+        const megaMenuOverlay = document.getElementById('megaMenuOverlay');
 
-        function toggleMegaMenu() {
-            megaMenu.classList.toggle('active');
-            megaMenuToggle.classList.toggle('active');
+        function openMegaMenu() {
+            megaMenu.classList.add('active');
+            megaMenuToggle.classList.add('active');
+            megaMenuOverlay.classList.add('active');
+            body.classList.add('menu-open');
         }
 
         function closeMegaMenu() {
             megaMenu.classList.remove('active');
             megaMenuToggle.classList.remove('active');
+            megaMenuOverlay.classList.remove('active');
+            body.classList.remove('menu-open');
         }
 
-        // Открытие мегаменю при клике на логотип
+        // Открытие мегаменю при клике на логотип или кнопку
+        function toggleMegaMenu() {
+            if (megaMenu.classList.contains('active')) {
+                closeMegaMenu();
+            } else {
+                openMegaMenu();
+                // Закрываем мобильное меню при открытии мегаменю
+                navLinksContainer.classList.remove('active');
+            }
+        }
+
+        // Обработчики событий для открытия мега-меню
         logoContainer.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleMegaMenu();
-            // Закрываем мобильное меню при открытии мегаменю
-            navLinksContainer.classList.remove('active');
         });
 
         megaMenuToggle.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleMegaMenu();
-            // Закрываем мобильное меню при открытии мегаменю
-            navLinksContainer.classList.remove('active');
         });
 
-        // Закрытие меню при клике вне его
-        document.addEventListener('click', (event) => {
-            if (!event.target.closest('#mobileMenuBtn') && !event.target.closest('#navLinks')) {
-                navLinksContainer.classList.remove('active');
+        // Закрытие мега-меню при клике на overlay
+        megaMenuOverlay.addEventListener('click', function(e) {
+            if (e.target === megaMenuOverlay) {
+                closeMegaMenu();
             }
-            if (!event.target.closest('#logoContainer') && !event.target.closest('#megaMenuToggle') && !event.target.closest('#megaMenu')) {
+        });
+
+        // Закрытие мега-меню при клике вне его
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('#logoContainer') &&
+                !event.target.closest('#megaMenuToggle') &&
+                !event.target.closest('#megaMenu')) {
+                closeMegaMenu();
+            }
+        });
+
+        // Закрытие мега-меню при нажатии Escape
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && megaMenu.classList.contains('active')) {
                 closeMegaMenu();
             }
         });
@@ -2802,11 +2888,11 @@
 
         // Функция переключения слайда
         function goToSlide(n) {
-            // Убираем активный класс у текущего слайда
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide].classList.remove('active');
+            // Снимаем активный класс с текущего слайда
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
 
-            // Вычисляем новый индекс слайда
+            // Вычисляем новый индекс
             currentSlide = (n + totalSlides) % totalSlides;
 
             // Добавляем активный класс новому слайду
@@ -2826,31 +2912,44 @@
 
         // Автопрокрутка слайдов
         function startAutoSlide() {
-            slideInterval = setInterval(nextSlide, 8000); // Меняем каждые 8 секунд
+            // Очищаем предыдущий интервал если есть
+            if (slideInterval) {
+                clearInterval(slideInterval);
+            }
+
+            slideInterval = setInterval(() => {
+                nextSlide();
+            }, 8000); // 8 секунд
         }
 
         function stopAutoSlide() {
-            clearInterval(slideInterval);
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
         }
 
         // Обработчики событий для кнопок
         nextBtn.addEventListener('click', () => {
             nextSlide();
+            // Перезапускаем автопрокрутку
             stopAutoSlide();
             startAutoSlide();
         });
 
         prevBtn.addEventListener('click', () => {
             prevSlide();
+            // Перезапускаем автопрокрутку
             stopAutoSlide();
             startAutoSlide();
         });
 
         // Обработчики событий для точек
-        dots.forEach(dot => {
+        dots.forEach((dot, index) => {
             dot.addEventListener('click', function() {
                 const slideIndex = parseInt(this.getAttribute('data-slide'));
                 goToSlide(slideIndex);
+                // Перезапускаем автопрокрутку
                 stopAutoSlide();
                 startAutoSlide();
             });
@@ -2861,8 +2960,16 @@
         banner.addEventListener('mouseenter', stopAutoSlide);
         banner.addEventListener('mouseleave', startAutoSlide);
 
-        // Инициализация слайдера
-        startAutoSlide();
+        // Инициализация слайдера при загрузке страницы
+        function initSlider() {
+            // Устанавливаем начальный слайд
+            goToSlide(0);
+            // Запускаем автопрокрутку
+            startAutoSlide();
+        }
+
+        // Инициализируем слайдер после полной загрузки страницы
+        window.addEventListener('load', initSlider);
 
         // Глобальные функции для кнопок в баннерах
         window.focusSearch = function() {
@@ -2924,7 +3031,6 @@
 
         // Переключатель темы
         const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
 
         // Проверяем сохраненную тему
         const savedTheme = localStorage.getItem('theme') || 'light';
